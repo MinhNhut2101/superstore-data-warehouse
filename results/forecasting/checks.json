@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "unit_tests_run": 4,
+  "saved_models_reproduce_all_three_forecasts": true,
+  "all_baseline_predictions_match_last_year": true,
+  "training_ends_exactly_one_month_before_target": true
+}

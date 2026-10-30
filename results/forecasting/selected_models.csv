@@ -1,0 +1,4 @@
+﻿category,model,validation_wape_pct
+Furniture,holt_winters,12.08916503645888
+Office Supplies,holt_winters,8.932721100544025
+Technology,holt_winters,13.392860468357307
