@@ -236,7 +236,7 @@ def forecasts():
 
 def main():
     with st.sidebar:
-        st.markdown("## 🌸 SUPERSTORE")
+        st.markdown("## KHO DỮ LIỆU BÁN LẺ VÀ HỆ HỖ TRỢ QUYẾT ĐỊNH LẬP KẾ HOẠCH BÁN HÀNG")
         st.caption("Phân tích kinh doanh & hỗ trợ quyết định")
         page = st.radio("Điều hướng", PAGES, label_visibility="collapsed")
         if st.button("Làm mới dữ liệu", width="stretch"):
