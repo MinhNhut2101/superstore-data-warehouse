@@ -90,6 +90,27 @@ class DashboardChecks(unittest.TestCase):
         self.assertEqual(len(app.metric), 0)
         self.assertIn("Dữ liệu kho đã thay đổi", app.error[0].value)
 
+    def test_linux_newlines_do_not_hide_valid_forecast(self):
+        app = self.app()
+        csv = ROOT / "results/forecasting/monthly_sales.csv"
+        content = csv.read_bytes().replace(b"\r\n", b"\n")
+        original_read = Path.read_bytes
+        with patch.object(Path, "read_bytes", lambda path: content if path == csv else original_read(path)):
+            app.sidebar.radio[0].set_value("Dự báo doanh thu").run()
+        self.assert_clean(app)
+        self.assertEqual(app.metric[0].value, "352.375,83")
+
+    def test_changed_forecast_file_is_still_rejected(self):
+        app = self.app()
+        csv = ROOT / "results/forecasting/monthly_sales.csv"
+        altered = csv.read_bytes().replace(b"Furniture", b"Furniture_changed", 1)
+        original_read = Path.read_bytes
+        with patch.object(Path, "read_bytes", lambda path: altered if path == csv else original_read(path)):
+            app.sidebar.radio[0].set_value("Dự báo doanh thu").run()
+        self.assertEqual(len(app.exception), 0)
+        self.assertEqual(len(app.metric), 0)
+        self.assertIn("Dữ liệu kho đã thay đổi", app.error[0].value)
+
     def test_connection_failure_shows_recovery_message(self):
         with patch("data.metadata", side_effect=psycopg.OperationalError("test connection failure")):
             app = self.app()
@@ -107,5 +128,6 @@ if __name__ == "__main__":
         "tests_run": result.testsRun, "failures": len(result.failures), "errors": len(result.errors),
         "coverage": ["12 SQL outputs reconciled", "filtered KPI and composite order count",
                      "5 pages and 12 explorer choices", "3 forecast categories and total",
-                     "UI filters and empty selection", "stale forecasts hidden", "connection failure handled"]}, indent=2), encoding="utf-8")
+                     "UI filters and empty selection", "stale forecasts hidden", "connection failure handled",
+                     "Linux CSV newlines accepted", "changed CSV content rejected"]}, indent=2), encoding="utf-8")
     raise SystemExit(0 if result.wasSuccessful() else 1)

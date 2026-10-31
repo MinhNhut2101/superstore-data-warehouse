@@ -181,7 +181,12 @@ def forecasts():
         pd.testing.assert_frame_equal(history.sort_values(["category", "month"]).reset_index(drop=True),
                                       live.sort_values(["category", "month"]).reset_index(drop=True),
                                       check_dtype=False, atol=1e-6, rtol=0)
-        assert hashlib.sha256((folder / "monthly_sales.csv").read_bytes()).hexdigest() == manifest["monthly_data_sha256"]
+        # Git may convert Windows CRLF to LF during deployment. Compare the same
+        # content in either newline convention, including manifests created before this fix.
+        content = (folder / "monthly_sales.csv").read_bytes().replace(b"\r\n", b"\n")
+        valid_hashes = {hashlib.sha256(content).hexdigest(),
+                        hashlib.sha256(content.replace(b"\n", b"\r\n")).hexdigest()}
+        assert manifest["monthly_data_sha256"] in valid_hashes
     except (AssertionError, KeyError):
         st.error("Dữ liệu kho đã thay đổi so với bộ dự báo. Chạy lại src/forecasting/forecast.py để cập nhật trước khi xem kết quả.")
         return

@@ -70,6 +70,8 @@ các mục mở rộng và có nút tải CSV; dữ liệu xuất giữ nguyên 
   mỗi lần mở trang. Trước khi hiển thị, ứng dụng đối chiếu toàn bộ 144 tổng doanh
   thu tháng với kho và kiểm tra hash của dữ liệu mô hình. Nếu khác, yêu cầu chạy
   lại `src/forecasting/forecast.py` để cập nhật.
+  Hash chấp nhận cả xuống dòng LF và CRLF để Git chuyển định dạng khi deploy
+  không bị nhận nhầm là thay đổi dữ liệu; nội dung thay đổi vẫn bị chặn.
 - WAPE tổng trên trang dự báo được tính sau khi cộng doanh thu ba nhóm theo tháng:
   **9,63%** trên năm 2014. WAPE gộp trên 36 cặp nhóm–tháng là chỉ số khác (**12,27%**).
 - Đơn vị doanh thu giữ theo nguồn, chưa gán nhãn USD. Không suy diễn quan hệ

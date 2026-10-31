@@ -191,7 +191,7 @@ def main():
         assert chosen == ranked.iloc[0].model
     manifest = {"status": "passed", "created_at": datetime.now(timezone.utc).isoformat(),
                 "data_source": "PostgreSQL dw.v_sales_analysis; order_date, category, SUM(sales)",
-                "monthly_data_sha256": hashlib.sha256((OUTPUT / "monthly_sales.csv").read_bytes()).hexdigest(),
+                "monthly_data_sha256": hashlib.sha256((OUTPUT / "monthly_sales.csv").read_bytes().replace(b"\r\n", b"\n")).hexdigest(),
                 "months_per_category": 48, "categories": 3, "source_reconciliation": "all 144 monthly totals match processed CSV",
                 "initial_training": "2011-01 through 2012-12", "validation": "2013-01 through 2013-12",
                 "test": "2014-01 through 2014-12", "horizon_months": 1,
