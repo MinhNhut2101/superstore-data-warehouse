@@ -9,7 +9,7 @@ import streamlit as st
 
 from data import ROOT, QUERIES, current_monthly, metadata, monthly_growth, olap
 
-st.set_page_config(page_title="Superstore · Phân tích & dự báo", page_icon="🌸", layout="wide")
+st.set_page_config(page_title="Superstore · Phân tích & dự báo", layout="wide")
 st.markdown("""<style>
 .stApp {background:#fffafd;} [data-testid="stSidebar"] {background:#fcecf4;}
 .block-container {padding-top:2rem; max-width:1500px;}
